@@ -390,6 +390,27 @@ describe('yeoman.generators.Base', function () {
     });
   });
 
+  describe('#composeWith()', function () {
+    beforeEach(function () {
+      this.spy = sinon.spy();
+      this.GenCompose = yo.generators.Base.extend({ exec: this.spy });
+    });
+
+    it('runs the composed generators', function (done) {
+      this.dummy.composeWith(this.GenCompose);
+      var runSpy = sinon.spy(this.dummy, 'run');
+      // setTimeout ensure the composition doesn't kick the run methods.
+      setTimeout(function () {
+        this.dummy.run(function () {
+          assert(this.spy.calledAfter(runSpy));
+          done();
+        }.bind(this));
+      }.bind(this), 100);
+    });
+
+    it('pass options to the composed generators');
+  });
+
   describe('#desc()', function () {
     it('update the internal description', function () {
       this.dummy.desc('A new desc for this generator');
