@@ -394,10 +394,11 @@ describe('yeoman.generators.Base', function () {
     beforeEach(function () {
       this.spy = sinon.spy();
       this.GenCompose = yo.generators.Base.extend({ exec: this.spy });
+      this.env.registerStub(this.GenCompose, 'composed:gen');
     });
 
     it('runs the composed generators', function (done) {
-      this.dummy.composeWith(this.GenCompose);
+      this.dummy.composeWith('compose:gen');
       var runSpy = sinon.spy(this.dummy, 'run');
       // setTimeout ensure the composition doesn't kick the run methods.
       setTimeout(function () {
